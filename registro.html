@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ULEAM - Registro con Vue 3</title>
+  <link rel="stylesheet" href="estilos.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+<img src="logo_uleam.png" alt="Logo ULEAM" style="width: 180px; display: block; margin: 0 auto;">
+  
+  <div id="app" class="container">
+    <h1>ULEAM</h1>
+    <h2>Registro de Persona con Discapacidad</h2>
+    <form @submit.prevent="validarYRegistrar">
+      <label for="nombre">Nombre completo:</label>
+      <input type="text" id="nombre" v-model="form.nombre" required />
+
+      <label for="matricula">ID / Matrícula:</label>
+      <input type="text" id="matricula" v-model="form.matricula" required />
+
+      <label for="sexo">Sexo:</label>
+      <select id="sexo" v-model="form.sexo" required>
+        <option value="" disabled>Seleccione</option>
+        <option>Masculino</option>
+        <option>Femenino</option>
+        <option>Otro</option>
+      </select>
+
+      <label for="nacimiento">Fecha de nacimiento:</label>
+      <input type="date" id="nacimiento" v-model="form.nacimiento" required />
+
+      <label for="discapacidad">Tipo de discapacidad:</label>
+      <select id="discapacidad" v-model="form.discapacidad" required>
+        <option value="" disabled>Seleccione</option>
+        <option>Visual</option>
+        <option>Auditiva</option>
+        <option>Física</option>
+        <option>Intelectual</option>
+        <option>Otra</option>
+      </select>
+
+      <label for="porcentaje">Porcentaje de discapacidad (%):</label>
+      <input type="number" id="porcentaje" v-model.number="form.porcentaje" min="1" max="100" required />
+
+      <label for="facultad">Facultad:</label>
+      <select id="facultad" v-model="form.facultad" required>
+        <option value="" disabled>Seleccione</option>
+        <option>Ingeniería</option>
+        <option>Educación</option>
+        <option>Salud</option>
+        <option>Administración</option>
+      </select>
+
+      <label for="emergencia">Nombre contacto de emergencia:</label>
+      <input type="text" id="emergencia" v-model="form.emergencia" required />
+
+      <label for="telEmergencia">Teléfono de emergencia:</label>
+      <input type="tel" id="telEmergencia" v-model="form.telEmergencia" required />
+
+      <button type="submit">Registrar</button>
+    </form>
+  </div>
+
+<script>
+const { createApp } = Vue
+
+createApp({
+  data() {
+    return {
+      form: {
+        nombre: '',
+        matricula: '',
+        sexo: '',
+        nacimiento: '',
+        discapacidad: '',
+        porcentaje: null,
+        facultad: '',
+        emergencia: '',
+        telEmergencia: ''
+      }
+    }
+  },
+  methods: {
+    validarYRegistrar() {
+      for (const key in this.form) {
+        if (this.form[key] === '' || this.form[key] === null) {
+          alert('Completa todos los campos requeridos.');
+          return;
+        }
+      }
+      if (this.form.porcentaje < 1 || this.form.porcentaje > 100) {
+        alert('El porcentaje debe estar entre 1 y 100.');
+        return;
+      }
+      if (!/^[0-9]{7,10}$/.test(this.form.telEmergencia)) {
+        alert('Número de emergencia inválido. Debe tener entre 7 y 10 dígitos.');
+        return;
+      }
+      alert('Registro exitoso!');
+      // Limpiar formulario
+      this.form = {
+        nombre: '',
+        matricula: '',
+        sexo: '',
+        nacimiento: '',
+        discapacidad: '',
+        porcentaje: null,
+        facultad: '',
+        emergencia: '',
+        telEmergencia: ''
+      }
+      // Aquí puedes hacer redirección o guardar datos
+      // window.location.href = "administracion.html";
+    }
+  }
+}).mount('#app')
+</script>
+</body>
+</html>

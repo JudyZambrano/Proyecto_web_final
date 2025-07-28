@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ULEAM - Seguimiento con Vue 3</title>
+  <link rel="stylesheet" href="estilos.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+<img src="logo_uleam.png" alt="Logo ULEAM" style="width: 180px; display: block; margin: 0 auto;" />
+<div id="app" class="container">
+  <h1>ULEAM</h1>
+  <h2>Seguimiento de Persona</h2>
+  <form @submit.prevent="guardarSeguimiento">
+    <label for="fecha">Fecha:</label>
+    <input type="date" id="fecha" v-model="form.fecha" required />
+
+    <label for="tipo_apoyo">Tipo de apoyo:</label>
+    <select id="tipo_apoyo" v-model="form.tipo_apoyo" required>
+      <option value="" disabled>Seleccione</option>
+      <option>Psicológico</option>
+      <option>Académico</option>
+      <option>Técnico</option>
+      <option>Otro</option>
+    </select>
+
+    <label for="responsable">Responsable del seguimiento:</label>
+    <input type="text" id="responsable" v-model="form.responsable" required />
+
+    <label for="acciones">Acciones realizadas:</label>
+    <textarea id="acciones" rows="3" v-model="form.acciones" required></textarea>
+
+    <label for="observaciones">Observaciones:</label>
+    <textarea id="observaciones" rows="3" v-model="form.observaciones"></textarea>
+
+    <label for="proxima_fecha">Próxima fecha de seguimiento:</label>
+    <input type="date" id="proxima_fecha" v-model="form.proxima_fecha" />
+
+    <button type="submit">Guardar</button>
+  </form>
+</div>
+
+<script>
+const { createApp } = Vue
+
+createApp({
+  data() {
+    return {
+      form: {
+        fecha: '',
+        tipo_apoyo: '',
+        responsable: '',
+        acciones: '',
+        observaciones: '',
+        proxima_fecha: ''
+      }
+    }
+  },
+  methods: {
+    guardarSeguimiento() {
+      if (!this.form.fecha || !this.form.responsable) {
+        alert("Campos obligatorios incompletos.");
+        return;
+      }
+      alert("Seguimiento guardado.");
+      // Limpiar formulario si quieres
+      this.form = {
+        fecha: '',
+        tipo_apoyo: '',
+        responsable: '',
+        acciones: '',
+        observaciones: '',
+        proxima_fecha: ''
+      }
+      // Puedes redirigir si quieres:
+      // window.location.href = "inicio.html";
+    }
+  }
+}).mount('#app')
+</script>
+</body>
+</html>

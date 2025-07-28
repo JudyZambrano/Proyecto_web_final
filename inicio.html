@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ULEAM - Inicio de Sesión con Vue 3</title>
+  <link rel="stylesheet" href="estilos.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+<img src="logo_uleam.png" alt="Logo ULEAM" style="width: 180px; display: block; margin: 0 auto;" />
+
+<div id="app" class="container">
+  <h1>ULEAM</h1>
+  <h2>Inicio de Sesión</h2>
+  <form @submit.prevent="validarLogin">
+    <label for="correo">Correo institucional:</label>
+    <input type="email" id="correo" v-model="correo" required />
+
+    <label for="contrasena">Contraseña:</label>
+    <input type="password" id="contrasena" v-model="contrasena" required />
+
+    <button type="submit">Iniciar sesión</button>
+    <a href="#">¿Has olvidado la contraseña?</a>
+  </form>
+</div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+  data() {
+    return {
+      correo: '',
+      contrasena: ''
+    }
+  },
+  methods: {
+    validarLogin() {
+      if (!this.correo || !this.contrasena) {
+        alert("Completa todos los campos.");
+        return;
+      }
+      if (!this.correo.includes("@uleam.edu.ec")) {
+        alert("Usa un correo institucional válido (@uleam.edu.ec).");
+        return;
+      }
+      alert("Inicio de sesión correcto. Redirigiendo...");
+      // Simula la redirección
+      window.location.href = "registro.html";
+    }
+  }
+}).mount('#app');
+</script>
+</body>
+</html>

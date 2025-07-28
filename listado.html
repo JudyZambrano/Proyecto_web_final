@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado - Personas con Discapacidad</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio de Sesión</a></li>
+            <li><a href="register.html">Registro</a></li>
+            <li><a href="panel.html">Panel</a></li>
+            <li><a href="listado.html">Listado</a></li>
+            <li><a href="seguimiento.html">Seguimiento</a></li>
+        </ul>
+    </nav>
+
+    <div id="app">
+        <div class="container">
+            <h2>Personas Registradas</h2>
+            
+            <!-- Botón para agregar nueva persona -->
+            <button @click="showForm = !showForm" class="btn-agregar">
+                {{ showForm ? 'Cancelar' : 'Agregar Persona' }}
+            </button>
+            
+            <!-- Formulario para agregar persona -->
+            <div v-if="showForm" class="formulario">
+                <h3>Agregar Nueva Persona</h3>
+                <input v-model="nuevaPersona.nombre" placeholder="Nombre" type="text">
+                <input v-model="nuevaPersona.edad" placeholder="Edad" type="number">
+                <select v-model="nuevaPersona.tipoDiscapacidad">
+                    <option value="">Seleccionar tipo de discapacidad</option>
+                    <option value="Visual">Visual</option>
+                    <option value="Auditiva">Auditiva</option>
+                    <option value="Motora">Motora</option>
+                    <option value="Intelectual">Intelectual</option>
+                </select>
+                <input v-model="nuevaPersona.ubicacion" placeholder="Ubicación" type="text">
+                <button @click="agregarPersona()">Guardar</button>
+            </div>
+            
+            <!-- Tabla de personas -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                        <th>Tipo de Discapacidad</th>
+                        <th>Ubicación</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="persona in personas" :key="persona.id">
+                        <td>{{ persona.id }}</td>
+                        <td>{{ persona.nombre }}</td>
+                        <td>{{ persona.edad }}</td>
+                        <td>{{ persona.tipoDiscapacidad }}</td>
+                        <td>{{ persona.ubicacion }}</td>
+                        <td>
+                            <button @click="eliminarPersona(persona.id)" class="btn-eliminar">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Mensaje si no hay personas -->
+            <div v-if="personas.length === 0" class="no-datos">
+                No hay personas registradas
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                // Datos iniciales con información completa
+                personas: [
+                    {
+                        id: 1,
+                        nombre: 'Ana Lopez',
+                        edad: 25, // Edad agregada
+                        tipoDiscapacidad: 'Visual',
+                        ubicacion: 'Manta, Manabí' // Ubicación agregada
+                    }
+                ],
+                // Formulario para nuevas personas
+                nuevaPersona: {
+                    nombre: '',
+                    edad: '',
+                    tipoDiscapacidad: '',
+                    ubicacion: ''
+                },
+                showForm: false
+            },
+            methods: {
+                // Método para agregar nueva persona
+                agregarPersona() {
+                    if (this.nuevaPersona.nombre && this.nuevaPersona.edad && 
+                        this.nuevaPersona.tipoDiscapacidad && this.nuevaPersona.ubicacion) {
+                        
+                        const persona = {
+                            id: this.personas.length + 1,
+                            nombre: this.nuevaPersona.nombre,
+                            edad: parseInt(this.nuevaPersona.edad),
+                            tipoDiscapacidad: this.nuevaPersona.tipoDiscapacidad,
+                            ubicacion: this.nuevaPersona.ubicacion
+                        };
+                        
+                        this.personas.push(persona);
+                        this.guardarDatos();
+                        this.limpiarFormulario();
+                        this.showForm = false;
+                    }
+                },
+                
+                // Método para eliminar persona
+                eliminarPersona(id) {
+                    this.personas = this.personas.filter(persona => persona.id !== id);
+                    this.guardarDatos();
+                },
+                
+                // Limpiar formulario
+                limpiarFormulario() {
+                    this.nuevaPersona = {
+                        nombre: '',
+                        edad: '',
+                        tipoDiscapacidad: '',
+                        ubicacion: ''
+                    };
+                },
+                
+                // Guardar datos en localStorage
+                guardarDatos() {
+                    localStorage.setItem('personasRegistradas', JSON.stringify(this.personas));
+                },
+                
+                // Cargar datos desde localStorage
+                cargarDatos() {
+                    const datosGuardados = localStorage.getItem('personasRegistradas');
+                    if (datosGuardados) {
+                        this.personas = JSON.parse(datosGuardados);
+                    }
+                }
+            },
+            
+            // Cargar datos al montar el componente
+            mounted() {
+                this.cargarDatos();
+                // Si no hay datos guardados, mantener los datos iniciales
+                if (this.personas.length === 0) {
+                    this.personas = [
+                        {
+                            id: 1,
+                            nombre: 'Ana Lopez',
+                            edad: 25,
+                            tipoDiscapacidad: 'Visual',
+                            ubicacion: 'Manta, Manabí'
+                        }
+                    ];
+                    this.guardarDatos();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ULEAM - Administración con Vue 3</title>
+  <link rel="stylesheet" href="estilos.css" />
+  <style>
+    .grafico-circular {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #4e79a7 0% 56.6%,          
+        #f28e2b 56.6% 59%,        
+        #e15759 59% 100%          
+      );
+      margin: 30px auto;
+      position: relative;
+      border: 3px solid #ccc;
+    }
+    .leyenda {
+      max-width: 300px;
+      margin: 10px auto;
+      font-size: 14px;
+    }
+    .leyenda-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .cuadro-color {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      border-radius: 3px;
+    }
+    .azul { background-color: #4e79a7; }
+    .naranja { background-color: #f28e2b; }
+    .rojo { background-color: #e15759; }
+  </style>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+<img src="logo_uleam.png" alt="Logo ULEAM" style="width: 180px; display: block; margin: 0 auto;" />
+<div id="app" class="container">
+  <h1>ULEAM</h1>
+  <h2>Panel de Administración</h2>
+  <div class="panel">
+    <p><strong>Personas registradas:</strong> {{ personasRegistradas }}</p>
+    <p><strong>Tipos de discapacidad:</strong> {{ tiposDiscapacidad }}</p>
+    <p><strong>Intervenciones realizadas:</strong> {{ intervencionesRealizadas }}</p>
+    <button @click="verLista">Ver lista</button>
+    <button @click="crearReporte">Crear reporte</button>
+  </div>
+
+  <div class="grafico-circular"></div>
+
+  <div class="leyenda">
+    <div class="leyenda-item"><div class="cuadro-color azul"></div>Personas registradas ({{ personasRegistradas }})</div>
+    <div class="leyenda-item"><div class="cuadro-color naranja"></div>Tipos de discapacidad ({{ tiposDiscapacidad }})</div>
+    <div class="leyenda-item"><div class="cuadro-color rojo"></div>Intervenciones realizadas ({{ intervencionesRealizadas }})</div>
+  </div>
+</div>
+
+<script>
+const { createApp } = Vue
+
+createApp({
+  data() {
+    return {
+      personasRegistradas: 100,
+      tiposDiscapacidad: 5,
+      intervencionesRealizadas: 54
+    }
+  },
+  methods: {
+    verLista() {
+      alert('Accediendo a la lista...');
+      // Aquí podrías hacer window.location.href = 'personas-registradas.html'
+    },
+    crearReporte() {
+      alert('Generando reporte...');
+      // Aquí puedes agregar lógica para generar reporte
+    }
+  }
+}).mount('#app')
+</script>
+</body>
+</html>
